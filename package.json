@@ -15,6 +15,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "test": "node tests/scanner.test.js",
     "clean": "rm -rf dist",
     "prepublishOnly": "npm run clean && npm run build"
   },
