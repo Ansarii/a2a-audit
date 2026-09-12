@@ -1,0 +1,46 @@
+{
+  "name": "a2a-audit",
+  "version": "1.0.0",
+  "description": "Zero-dependency DevSecOps static security scanner and SARIF linter for Agent2Agent (A2A) Agent Cards (/.well-known/agent-card.json)",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "bin": {
+    "a2a-audit": "./dist/cli.js"
+  },
+  "files": [
+    "dist",
+    "action.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "clean": "rm -rf dist",
+    "prepublishOnly": "npm run clean && npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ansarii/a2a-audit.git"
+  },
+  "keywords": [
+    "a2a",
+    "agent2agent",
+    "agent-card",
+    "ai-agents",
+    "security",
+    "scanner",
+    "linter",
+    "sarif",
+    "devsecops",
+    "mcp",
+    "google-cloud",
+    "linux-foundation",
+    "owasp-agentic"
+  ],
+  "author": "Neon Innovation Lab <support@neoninnovationlab.com>",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/Ansarii/a2a-audit/issues"
+  },
+  "homepage": "https://github.com/Ansarii/a2a-audit#readme"
+}

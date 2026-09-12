@@ -1,0 +1,41 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x]
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+
+    - name: Build
+      run: |
+        npm install --save-dev typescript @types/node
+        npm run build
+
+    - name: Run Test Suite
+      run: |
+        npx ts-node tests/scanner.test.ts
+
+    - name: Test CLI binary on Compliant Fixture
+      run: |
+        node dist/cli.js fixtures/compliant-agent-card.json
+
+    - name: Test CLI SARIF generation on Vulnerable Fixture
+      run: |
+        node dist/cli.js fixtures/vulnerable-agent-card.json --format sarif -o results.sarif || true
+        test -f results.sarif

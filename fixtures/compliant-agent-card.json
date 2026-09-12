@@ -1,0 +1,105 @@
+{
+  "name": "Enterprise FinTech Settlement Agent",
+  "description": "Performs cross-border multi-currency invoice reconciliation and cryptographic settlement verification between verified enterprise counterparties.",
+  "supportedInterfaces": [
+    {
+      "url": "https://fintech-agent.neoninnovationlab.com/a2a/v1",
+      "protocolBinding": "JSONRPC",
+      "protocolVersion": "1.0"
+    },
+    {
+      "url": "https://fintech-agent.neoninnovationlab.com/a2a/grpc",
+      "protocolBinding": "GRPC",
+      "protocolVersion": "1.0"
+    }
+  ],
+  "provider": {
+    "organization": "Neon Innovation Lab",
+    "url": "https://fintech-agent.neoninnovationlab.com"
+  },
+  "iconUrl": "https://fintech-agent.neoninnovationlab.com/assets/icon.png",
+  "version": "1.0.0",
+  "documentationUrl": "https://fintech-agent.neoninnovationlab.com/docs",
+  "capabilities": {
+    "streaming": true,
+    "pushNotifications": true,
+    "extendedAgentCard": true
+  },
+  "securitySchemes": {
+    "enterpriseOAuth2": {
+      "oauth2SecurityScheme": {
+        "description": "Enterprise OAuth 2.0 with Authorization Code and PKCE",
+        "flows": {
+          "authorizationCode": {
+            "authorizationUrl": "https://auth.neoninnovationlab.com/oauth2/authorize",
+            "tokenUrl": "https://auth.neoninnovationlab.com/oauth2/token",
+            "scopes": {
+              "settlement:read": "Read settlement transactions",
+              "settlement:execute": "Execute verified multi-currency settlements"
+            }
+          }
+        },
+        "oauth2MetadataUrl": "https://auth.neoninnovationlab.com/.well-known/oauth-authorization-server"
+      }
+    }
+  },
+  "securityRequirements": [
+    {
+      "schemes": {
+        "enterpriseOAuth2": {
+          "list": ["settlement:read"]
+        }
+      }
+    }
+  ],
+  "defaultInputModes": ["application/json", "application/a2a+json"],
+  "defaultOutputModes": ["application/json"],
+  "skills": [
+    {
+      "id": "reconcile-invoice",
+      "name": "Invoice Reconciler",
+      "description": "Matches inbound commercial invoices against ERP ledger records and calculates foreign exchange variance.",
+      "tags": ["finance", "invoicing", "reconciliation", "erp"],
+      "examples": [
+        "Reconcile invoice INV-2026-981 against purchase order PO-88412."
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "enterpriseOAuth2": {
+              "list": ["settlement:read"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "id": "execute-settlement",
+      "name": "Settlement Executor",
+      "description": "Triggers multi-currency bank settlement for verified accounts with dual-approval verification.",
+      "tags": ["settlement", "payment", "bank-transfer"],
+      "examples": [
+        "Settle approved invoice INV-2026-981 via FedNow transfer."
+      ],
+      "inputModes": ["application/json"],
+      "outputModes": ["application/json"],
+      "securityRequirements": [
+        {
+          "schemes": {
+            "enterpriseOAuth2": {
+              "list": ["settlement:execute"]
+            }
+          }
+        }
+      ]
+    }
+  ],
+  "signatures": [
+    {
+      "protected": "eyJhbGciOiJFUzI1NiIsInR5cCI6IkpPU0UiLCJraWQiOiJrZXktcHJvZC0yMDI2Iiwiamt1IjoiaHR0cHM6Ly9maW50ZWNoLWFnZW50Lm5lb25pbm5vdmF0aW9ubGFiLmNvbS8ud2VsbC1rbm93bi9qd2tzLmpzb24ifQ",
+      "signature": "MEQCIF6N_3Y3zCgT7o3lP84tqZ6lX8LqG7qS4d4sF4_aG_ZZAiBt3-7F0p8ZzCgT7o3lP84tqZ6lX8LqG7qS4d4sF4_aGQ"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+name: "A2A Agent Card Security Audit"
+description: "Zero-dependency DevSecOps static security scanner and SARIF linter for Agent2Agent (A2A) Agent Cards (/.well-known/agent-card.json)"
+author: "Neon Innovation Lab"
+inputs:
+  card-path:
+    description: "Path to agent-card.json or remote URL"
+    required: false
+    default: "./.well-known/agent-card.json"
+  format:
+    description: "Output format: 'terminal', 'json', or 'sarif'"
+    required: false
+    default: "sarif"
+  output-file:
+    description: "File to write audit report to"
+    required: false
+    default: "a2a-audit-results.sarif"
+  strict:
+    description: "Fail on medium severity findings"
+    required: false
+    default: "false"
+  fail-on:
+    description: "Severity threshold to fail the action: 'critical', 'high', 'medium'"
+    required: false
+    default: "high"
+runs:
+  using: "composite"
+  steps:
+    - name: Run a2a-audit
+      shell: bash
+      run: |
+        STRICT_FLAG=""
+        if [ "${{ inputs.strict }}" = "true" ]; then
+          STRICT_FLAG="--strict"
+        fi
+        node "${{ github.action_path }}/dist/cli.js" scan "${{ inputs.card-path }}" \
+          --format "${{ inputs.format }}" \
+          --output "${{ inputs.output-file }}" \
+          --fail-on "${{ inputs.fail-on }}" \
+          $STRICT_FLAG
+branding:
+  icon: "shield"
+  color: "purple"
